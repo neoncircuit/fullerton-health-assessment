@@ -132,4 +132,6 @@ class GeminiClient(BaseLLMClient):
             logger.error(
                 "Failed to parse Gemini response as JSON: %s", response_text[:200]
             )
-            raise ValueError("Gemini response could not be parsed as valid JSON.") from exc
+            raise ValueError(
+                "Gemini response could not be parsed as valid JSON."
+            ) from exc

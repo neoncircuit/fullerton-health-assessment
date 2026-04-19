@@ -67,7 +67,10 @@ async def process_document(file: UploadFile | None = None) -> dict:
         media_type = _get_media_type(file.filename)
 
         logger.info(
-            "Received file: %s (%s, %d bytes)", file.filename, media_type, len(file_bytes)
+            "Received file: %s (%s, %d bytes)",
+            file.filename,
+            media_type,
+            len(file_bytes),
         )
 
         if media_type == "application/pdf":

@@ -21,7 +21,9 @@ load_dotenv()
 async def main() -> None:
     """Run classification and extraction on the medical certificate sample."""
     # Use the medical certificate from the sample data
-    mc_pdf_path = Path(__file__).parent.parent / "data" / "raw" / "medical_certificate.pdf"
+    mc_pdf_path = (
+        Path(__file__).parent.parent / "data" / "raw" / "medical_certificate.pdf"
+    )
 
     file_bytes = mc_pdf_path.read_bytes()
     pages = pdf_to_images(file_bytes)
