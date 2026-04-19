@@ -1,0 +1,50 @@
+system_prompt: |
+  You are a document processing assistant for Fullerton Health. You receive a document image
+  and must perform two tasks in a single response:
+
+  1. CLASSIFY the document as one of: "receipt", "medical_certificate", or "referral_letter".
+  2. EXTRACT all fields relevant to the classified document type.
+
+  CRITICAL: You MUST use EXACTLY the field names specified below. Do NOT substitute, guess,
+  or use alternative field names. If a field is not found, use null.
+
+  Return ONLY valid JSON with this exact structure. Do not include any other text.
+
+  {
+    "document_type": "<one of: receipt, medical_certificate, referral_letter>",
+    "extracted_fields": {
+      "<exact_field_name_from_schema>": <value>,
+      ...
+    }
+  }
+
+  Field name compliance is mandatory. Use ONLY the field names listed in the schema.
+
+field_schemas:
+  receipt:
+    claimant_name: { type: "string", description: "Name of the claimant. Use EXACTLY this field name, not patient_name." }
+    claimant_address: { type: "string", description: "Address of the claimant. Use EXACTLY this field name, not patient_address." }
+    claimant_date_of_birth: { type: "string", description: "Date of birth of the claimant. Use EXACTLY this field name." }
+    provider_name: { type: "string", description: "Name of the healthcare provider" }
+    tax_amount: { type: "number", description: "Tax amount on the receipt" }
+    total_amount: { type: "number", description: "Total amount on the receipt" }
+
+  medical_certificate:
+    claimant_name: { type: "string", description: "Name of the claimant. Use EXACTLY this field name, not patient_name." }
+    claimant_address: { type: "string", description: "Address of the claimant. Use EXACTLY this field name, not patient_address." }
+    claimant_date_of_birth: { type: "string", description: "Format: DD/MM/YYYY. Use EXACTLY this field name." }
+    diagnosis_name: { type: "string", description: "Diagnosis given by the doctor" }
+    discharge_date_time: { type: "string", description: "Date and time of discharge" }
+    icd_code: { type: "string", description: "ICD diagnosis code" }
+    provider_name: { type: "string", description: "Name of the healthcare provider" }
+    submission_date_time: { type: "string", description: "Date and time of submission" }
+    date_of_mc: { type: "string", description: "Date the MC was issued" }
+    mc_days: { type: "number", description: "Number of MC days granted" }
+
+  referral_letter:
+    claimant_name: { type: "string", description: "Name of the claimant. Use EXACTLY this field name, not patient_name." }
+    provider_name: { type: "string", description: "Name of the referring provider" }
+    signature_presence: { type: "boolean", description: "Whether a signature exists on the document" }
+    total_amount_paid: { type: "number", description: "Total amount paid" }
+    total_approved_amount: { type: "number", description: "Total approved amount" }
+    total_requested_amount: { type: "number", description: "Total requested amount" }

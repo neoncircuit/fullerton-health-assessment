@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read .python-version
+        id: python-version
+        run: echo "version=$(cat .python-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ steps.python-version.outputs.version }}
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint (ruff check)
+        run: ruff check src/ tests/ examples/
+
+      - name: Format check (ruff format)
+        run: ruff format --check src/ tests/ examples/
+
+      - name: Run tests
+        run: pytest tests/ -v
