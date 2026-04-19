@@ -2,7 +2,7 @@ import logging
 import time
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, UploadFile
 
 from src.handlers.error_handler import (
     FileMissingError,
